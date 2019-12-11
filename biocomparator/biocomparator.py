@@ -103,7 +103,8 @@ class BioComparator(object):
         self.psos = psos
         return
 
-    def run_pso(self, num_particles=20, pso_iterations=50):
+    def run_pso(self, num_particles=20, pso_iterations=50,
+                pso_stop_threshold=1e-5, verbose=False):
         """Run PSO on each model.
 
         Returns:
@@ -115,25 +116,48 @@ class BioComparator(object):
         if self.psos is None:
             warnings.warn("Unable to run. Must call the 'gen_pso' function first!")
             return
-
-        for i in range(len(self.psos)):
-            self.psos[i].run(num_particles, pso_iterations)
         frame = list()
-        for i,pso in enumerate(self.psos):
-            best = pso.best
-            min_cost = pso.best.fitness.values[0]
-            print(min_cost)
+        for i in range(len(self.psos)):
+            if verbose:
+                print("Running PSO on model {}".format(self.models[i].name))
+            self.psos[i].run(num_particles, pso_iterations,
+                             stop_threshold=pso_stop_threshold)
+            best = self.psos[i].best
+            min_cost = self.psos[i].best.fitness.values[0]
+            # print(min_cost)
             k = len(best)
             ML = -1. * min_cost
             data_d = dict()
-            data_d['model'] = "model_{}".format(i)
+            #data_d['model'] = "model_{}".format(i)
+            data_d['model'] = self.models[i].name
             data_d['cost'] = min_cost
             data_d['AIC'] = self.akaike_ic(k, ML)
             #print(self._n_data())
             #data_d['BIC'] = self.bayesian_ic(k, ML, self._n_data())
-            data_d['theta'] = best
-
+            data_d['n_theta'] = k
+            data_d['theta_best'] = best
+            if verbose:
+                print("model: {} cost: {} AIC: {} n_theta: {}".format(data_d['model'], data_d['cost'], data_d['AIC'], data_d['n_theta']))
             frame.append(data_d)
+        #frame = list()
+        #for i,pso in enumerate(self.psos):
+        #    best = pso.best
+        #    min_cost = pso.best.fitness.values[0]
+        #    # print(min_cost)
+        #    k = len(best)
+        #    ML = -1. * min_cost
+        #    data_d = dict()
+        #    #data_d['model'] = "model_{}".format(i)
+        #    data_d['model'] = self.models[i].name
+        #    data_d['cost'] = min_cost
+        #    data_d['AIC'] = self.akaike_ic(k, ML)
+        #    #print(self._n_data())
+        #    #data_d['BIC'] = self.bayesian_ic(k, ML, self._n_data())
+        #    data_d['n_theta'] = k
+        #    data_d['theta_best'] = best
+        #    if verbose:
+        #        print("model: {} cost: {} AIC: {} n_theta: {}".format(data_d['model'], data_d['cost'], data_d['AIC'], data_d['n_theta']))
+        #    frame.append(data_d)
         optima = pd.DataFrame(frame)
         #selection.sort_values(by=['log_evidence'], ascending=False, inplace=True)
         self.optima = optima
