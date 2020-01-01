@@ -104,7 +104,7 @@ class BioComparator(object):
         return
 
     def run_pso(self, num_particles=20, pso_iterations=50,
-                pso_stop_threshold=1e-5, verbose=False):
+                pso_stop_threshold=1e-5, verbose=True):
         """Run PSO on each model.
 
         Returns:
