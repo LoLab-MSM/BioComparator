@@ -1,25 +1,19 @@
 # BioComparator
-software toolset to compare biological-models
+Rapidly compare biological models written in PySB using particle swarm optimization-based model fitting and model selection metrics.
 
 ![Python version badge](https://img.shields.io/badge/python-3.6-blue.svg)
 [![license](https://img.shields.io/github/license/LoLab-VU/BioComparator.svg)](LICENSE)
-![version](https://img.shields.io/badge/version-0.1.0-orange.svg)
-[![release](https://img.shields.io/github/release-pre/LoLab-VU/BioComparator.svg)](https://github.com/LoLab-VU/BioComparator/releases/tag/v0.1.0)
+![version](https://img.shields.io/badge/version-0.2.0-orange.svg)
+[![release](https://img.shields.io/github/release-pre/LoLab-VU/BioComparator.svg)](https://github.com/LoLab-VU/BioComparator/releases/tag/v0.2.0)
 
 
-**BioComparator** is a python toolkit designed to compare
-different versions of a biological model, principally employing parameter estimation and model selection methodologies to differentiate the different versions of a model. **BioComparator** is designed to be compatible with the
-[PySB](http://pysb.org/) modeling framework.
+**BioComparator** is a Python software tool designed to compare biological models encoded using the [PySB](http://pysb.org/) modeling framework. Candidate models may for example encode different mechanistic hypotheses or represent different granularities of a biological mechanism. Principally, the tool employs parameter estimation to the set of candidate models with respect to a common data-set (or set of data-sets) via a common cost function. **BioComparator** then provides users with a set of comparative metrics such as the minimum cost and Akaike Information Criterion, allowing users to easily evaluate candidate models' fit to the data and the trade offs between the fit to data and model size/complexity.
 
- provides an easy to use interface for model calibration/parameter estimation using an implementation of continuous genetic algorithm-based optimization. Its functionality and API were designed to be familiar to users of the [PyDREAM](https://github.com/LoLab-VU/PyDREAM), [simplePSO](https://github.com/LoLab-VU/ParticleSwarmOptimization), and [Gleipnir](https://github.com/LoLab-VU/Gleipnir) packages.
+Currently, **BioComparator** uses particle swarm optimization-based parameter estimation, via the [simplePSO](https://github.com/LoLab-VU/ParticleSwarmOptimization) package, to minimize a cost function and fit models to a given data-set. In the future, interfaces may be added for other model calibration/parameter estimation tools, such as [Gleipnir](https://github.com/LoLab-VU/Gleipnir) (Bayesian parameter estimation and model evidence via Nested Sampling).
 
 ------
 
 # Install
-
-| **! Warning** |
-| :--- |
-|  BioComparator is still under heavy development and may rapidly change. |
 
 **BioComparator** installs as the `biocomparator` package. It is compatible (i.e., tested) with Python 3.6.
 
@@ -31,11 +25,17 @@ Note that `biocomparator` has the following core dependencies:
    * [swarm_it](https://github.com/LoLab-VU/swarm_it)
 
 ### pip install
-You can install the latest release of the `biocomparator` package using `pip` sourced from the GitHub repo:
+You can install the latest (possibly unreleased) version of the `biocomparator` package using `pip` sourced from the GitHub repo:
 ```
 pip install -e git+https://github.com/LoLab-VU/BioComparator/#egg=biocomparator
 ```
 However, this will not automatically install the core dependencies. You will have to do that separately.
+
+You can also install the latest release (currently v0.2.0) version of the `biocomparator` package using `pip` sourced from the GitHub repo with an additional release tag:
+```
+pip install -e git+https://github.com/LoLab-VU/BioComparator/#egg=biocomparator@v0.2.0
+```
+You may check the [BioComparator releases page](https://github.com/LoLab-VU/Gleipnir/releases/) to find all available releases.
 
 ------
 
